@@ -1,41 +1,53 @@
-var items = [5,3,0,7,2];
-function swap(items, leftIndex, rightIndex){
-    var temp = items[leftIndex];
-    items[leftIndex] = items[rightIndex];
-    items[rightIndex] = temp;
-}
-function partition(items, left, right) {
-    var pivot   = items[Math.floor((right + left) / 2)], //middle element
-        i       = left, //left pointer
-        j       = right; //right pointer
-    while (i <= j) {
-        while (items[i] < pivot) {
-            i++;
-        }
-        while (items[j] > pivot) {
-            j--;
-        }
-        if (i <= j) {
-            swap(items, i, j); //sawpping two elements
-            i++;
-            j--;
-        }
-    }
-    return i;
+'use strict';
+
+function recursiveAction(root, action, getNodes, depth) {
+    action(root, depth);
+    let nodes = getNodes(root, depth);
+
+    if(nodes)
+        for(let i = 0; i < nodes.length; ++i)
+            recursiveAction(nodes[i], action, getNodes, depth + 1);
 }
 
-function quickSort(items, left, right) {
-    var index;
-    if (items.length > 1) {
-        index = partition(items, left, right); //index returned from partition
-        if (left < index - 1) { //more elements on the left side of the pivot
-            quickSort(items, left, index - 1);
+let root = {
+    data: 'root',
+    refs: [
+        {
+            data: 'node 1',
+            refs: [
+                { data: 'node 1.1', refs: [] }
+            ]
+        },
+        {
+            data: 'node 2',
+            refs: [
+                { data: 'node 2.1', refs: [] },
+                { data: 'node 2.2', refs: [] }
+            ]
+        },
+        {
+            data: 'node 3',
+            refs: [
+                { data: 'node 3.1', refs: [] },
+                { data: 'node 3.2', refs: [] },
+                { data: 'node 3.3', refs: [] }
+            ]
         }
-        if (index < right) { //more elements on the right side of the pivot
-            quickSort(items, index, right);
-        }
-    }
-    return items;
-}
-var sortedArray = quickSort(items, 0, items.length - 1);
-console.log(sortedArray);
+    ]
+};
+
+recursiveAction(
+    root,
+    (node, depth) => {
+        let output = '';
+        for(let i = 0; i < depth; ++i)
+            output += '  ';
+        output += JSON.stringify(node.data);
+        console.log(output);
+    },
+    (node, depth) => {
+        if (depth<1) return node.refs
+        else return []
+    },
+    0
+);

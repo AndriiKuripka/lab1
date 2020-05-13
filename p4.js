@@ -1,21 +1,20 @@
-function NumberOfMostUsefullSymbol (string) {
-    const myMap = new Map()
-    for (let i = 0; i < string.length; i++) {
-        if (myMap.has(string[i]) === false)
-            myMap.set(string[i], 1)
+
+exports.frequency=(arr,result )=>{
+    for (let i = 0; i < arr.length; ++i)
+    {
+        let a = arr[i];
+        if (result[a] != undefined)
+        { ++result[a];}
         else
-        {
-            let newNumber = myMap.get(string[i]);
-            myMap.set(string[i], ++newNumber)
-        }
-
-
+            result[a] = 1;
     }
-    console.log(myMap)
 
-    console.log([...myMap.entries()].reduce((a, e ) => e[1] > a[1] ? e : a))
-
+    //console.log('task_4 ')
+    let max=arr[0];
+    for (let i=1;i<arr.length;++i) {
+        if (max >= arr[i]) {
+            max = arr[i];
+        }
+    }
+    return('число '+ max + ' -' +result[max]+' раз/и/ів' )
 }
-str='kuripka'
-console.log(NumberOfMostUsefullSymbol(str))
-module.exports.NumberOfMostUsefullSymbol = NumberOfMostUsefullSymbol;
